@@ -20,7 +20,7 @@ const login = (navigateTo) => {
   // <-------------------------- Título de la página "login" ------------------------------->
 
   title.textContent = 'Iniciar sesión';
-  title.className = 'tituloLogin';
+  title.className = 'tituloLogin titulo';
 
   // <------------------- Campo para ingresar correo electrónico --------------------------->
 
@@ -52,11 +52,13 @@ const login = (navigateTo) => {
     loginUser(inputEmail.value, inputPass.value)
       .then((ok) => {
         if (ok) {
-          navigateTo('/muro');
+          console.log('hola', ok);
           localStorage.setItem('user', ok);
+          navigateTo('/muro');
         }
       }).catch((error) => {
-        alerts.textContent = error;
+        console.log('hola', error);
+        document.getElementById('alerts-error').textContent = error;
       });
   });
 
@@ -73,7 +75,7 @@ const login = (navigateTo) => {
         navigateTo('/muro');
       }
     }).catch((errorCode) => {
-      alerts.textContent = errorCode;
+      document.getElementById('alerts-error').textContent = errorCode;
     });
   });
 
@@ -87,7 +89,7 @@ const login = (navigateTo) => {
 
   buttonReturn.textContent = 'Regresar al inicio';
   buttonReturn.className = 'register';
-  buttonReturn.id = 'buttomReturn';
+  buttonReturn.id = 'buttonReturn';
   buttonReturn.addEventListener('click', () => {
     navigateTo('/');
   });
@@ -97,7 +99,7 @@ const login = (navigateTo) => {
   buttonGoogle.append(imgGoogle, textButtonGoogle);
   form.append(inputEmail, inputPass, alerts);
   buttons.append(buttonLogin, buttonGoogle, buttonReturn);
-  section.append(title, form, buttons, buttonGoogle);
+  section.append(title, form, buttons);
 
   return section;
 };

@@ -13,24 +13,36 @@ import { muro } from '../src/templates/muro';
 //     }
 //     return false;
 //   }),
-
-//   UpdatePost: jest.fn((id, nombreRest, locali, Calfic, Limpieza, precio, categoria) => {
-//     if (id !== null && nombreRest !== null && locali !== null && Calfic !== null && Limpieza !== null && precio !== null && categoria !== null) {
-//       return true;
-//     }
-//     return false;
+//   paintRealTtime: jest.fn(() => {
+//     const mockMuro = {
+//     // otras propiedades del mock del muro...
+//     paintRealTtime: paintRealTtime,
+//   },
+//   mockMuro.paintRealTtime((querySnapshot) => {
+//     querySnapshot.forEach((doc) => {
+//       // Aquí puedes hacer algo con cada documento (publicación)
+//       console.log(doc.data());
+//     });
 //   }),
 
-/* paintRealTtime: jest.fin((querySnapshot) => {
-    if (querySnapshot !== null) {
-      return querySnapshot;
-    }
+//   }),
 
-    return false;
-  }), */
+//   //   UpdatePost: jest.fn((id, nombreRest, locali, Calfic, Limpieza, precio, categoria) => {
+//   //     if (id !== null && nombreRest !== null && locali !== null && Calfic !== null && Limpieza !== null && precio !== null && categoria !== null) {
+//   //       return true;
+//   //     }
+//   //     return false;
+//   // }),
 
 // }));
-
+/*
+describe('paintRealTtime', () => {
+  it('paintRealTtime is a function', () => {
+    console.log(auth.paintRealTtime);
+    expect(typeof auth.paintRealTtime).toBe('function');
+  });
+});
+*/
 describe('muro', () => {
   it('muro is a function', () => {
     expect(typeof muro).toBe('function');
@@ -70,18 +82,36 @@ describe('muro', () => {
     const buttonCloseModalUpdate = DOM.querySelector('#idregisterPost');
     expect(buttonCloseModalUpdate).not.toBe(undefined);
   });
+
+  it('muro have buttom delete post', () => {
+    const DOM = document.createElement('div');
+    DOM.append(muro());
+    const buttonDeletePost = DOM.querySelector('.buttonDelete');
+    expect(buttonDeletePost).not.toBe(undefined);
+  });
+
+  it('function buttom return login', () => {
+    const DOM = document.createElement('div');
+    const mock = jest.fn();
+    DOM.append(muro(mock));
+    const buttonLogout = DOM.querySelector('.buttonLogout');
+    buttonLogout.click();
+    expect(mock).toHaveBeenLastCalledWith('/login');
+  });
 });
 
-// test('delete post', async () => {
-//   const mock = jest.fn();
-//   const DOM = document.createElement('div');
-//   DOM.append(muro(mock));
-//   const button = DOM.querySelector('#buttonUser');
-//   const idpost = 'sfghh';
-//   button.click();
-//   const data = await auth.deletePost(idpost);
-//   expect(data).toBe(true);
-// });
+/*
+test('delete post', async () => {
+  const mock = jest.fn();
+  const DOM = document.createElement('div');
+  DOM.append(muro(mock));
+  const button = DOM.querySelector('#buttonUser');
+  const idpost = 'sfghh';
+  button.click();
+  const data = await auth.deletePost(idpost);
+  expect(data).toBe(true);
+});
+*/
 
 // test('Register new post', async () => {
 //   const DOM = document.createElement('div');

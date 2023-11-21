@@ -1,15 +1,22 @@
 import {
-  createNewPost, UpdatePost, paintRealTtime, deletePost,
+  createNewPost,
+  UpdatePost,
+  paintRealTtime,
+  deletePost,
+  updateLikes,
 } from '../lib/auth.js';
 
 const muro = (navigateTo) => {
   const iduser = localStorage.getItem('user');
-  // localStorage.removeItem(user);
+
+  // if (iduser === undefined || iduser === null) {
+  //   return navigateTo('/login');
+  // }
 
   // elementos de cabecera
   const section = document.createElement('section');
   const buttonLogout = document.createElement('button');
-  // const nameUser = document.createElement('h2');
+  const imgLogout = document.createElement('img');
   const elemenNav = document.createElement('nav');
   const buttonPost = document.createElement('button');
   const imgNewPost = document.createElement('img');
@@ -72,55 +79,25 @@ const muro = (navigateTo) => {
   const contentPost = document.createElement('div');
   const listPost = document.createElement('ul');
 
-  // // Función para verificar si el usuario tiene la sesión iniciada
-  // const checkSession = () => new Promise((resolve, reject) => {
-  //   // Comprueba el estado de autenticación del usuario actual
-  //   auth.onAuthStateChanged((user) => {
-  //     if (user) {
-  //       // El usuario tiene la sesión iniciada
-  //       resolve(user);
-  //     } else {
-  //       // El usuario no tiene la sesión iniciada
-  //       reject(new Error('Usuario no autenticado'));
-  //     }
-  //   });
-  // });
-
-  // // Ejemplo de uso de la función checkSession
-  // checkSession()
-  //   .then((user) => {
-  //   // El usuario tiene la sesión iniciada
-  //     console.log('Usuario autenticado:', user.email);
-  //   // Aquí puedes realizar las acciones que necesites para un usuario autenticado
-  //   })
-  //   .catch((error) => {
-  //   // El usuario no tiene la sesión iniciada
-  //     console.error('Error:', error.message);
-  //   // Aquí puedes realizar las acciones que necesites para un usuario no autenticado
-  //   });
-
   // elementos de cabecera
-  // nameUser.textContent = 'Leslie Pacheco';
-  // nameUser.className = 'nameUser';
-
-  buttonLogout.textContent = 'Cerrar sesión';
-  buttonLogout.className = 'register';
-  buttonLogout.addEventListener('click', (e) => {
-    e.preventDefault();
-    navigateTo('/');
-  });
-  // const header = document.querySelector('header');
-
-  // header.append(buttonLogout);
 
   // nameUser.textContent = user;
   // nameUser.className = 'nameUser';
 
   elemenNav.className = 'elementHeader';
+
   buttonPost.className = 'buttonPost';
   imgNewPost.src = '../img/add.png';
   imgNewPost.className = 'imgNewPost';
-
+  buttonLogout.classList = ('buttonLogout');
+  imgLogout.src = '../img/cerrar-sesion.png';
+  imgLogout.classList = 'imgLogout';
+  buttonLogout.append(imgLogout);
+  buttonLogout.addEventListener('click', (e) => {
+    e.preventDefault();
+    localStorage.removeItem('user');
+    navigateTo('/login');
+  });
   // elementos del modal
   modal.className = 'modal';
   modal.id = 'modalRegister';
@@ -128,7 +105,7 @@ const muro = (navigateTo) => {
   headModal.className = 'head-modal';
   buttonCloseMdl.textContent = 'X';
   buttonCloseMdl.className = 'buttonCloseMdl';
-  titleModal.textContent = 'Nueva reseña';
+  titleModal.textContent = 'Nueva Reseña';
   titleModal.className = 'titleModal';
   // cuerpo del modal
   formNewPost.id = 'formNewPost';
@@ -268,9 +245,19 @@ const muro = (navigateTo) => {
     const categ = document.querySelector('#idcategory');
     const like = document.querySelector('#idLike');
     const idUser = document.querySelector('#idUser');
-    createNewPost(imagePost.value, namePost.value, loc.value, assm.value, clear.value, pri.value, categ.value, like.value, idUser.value);
+    createNewPost(
+      imagePost.value,
+      namePost.value,
+      loc.value,
+      assm.value,
+      clear.value,
+      pri.value,
+      categ.value,
+      like.value,
+      idUser.value,
+    );
     modal.classList.remove('modal--show');
-    // document.querySelector('#formNewPost').reset();
+    document.querySelector('#formNewPost').reset();
   });
 
   // modal para actualizar reseñas
@@ -333,9 +320,9 @@ const muro = (navigateTo) => {
   labelPrice.textContent = 'Rango de precios';
   priceUpdt.id = 'priceUpdt';
   priceUpdt.className = 'form-post';
-  priceOpt1Updt.value = 'Economico';
-  priceOpt1Updt.textContent = 'Economico';
-  priceOpt2Updt.value = 'Regualar';
+  priceOpt1Updt.value = 'Económico';
+  priceOpt1Updt.textContent = 'Económico';
+  priceOpt2Updt.value = 'Regular';
   priceOpt2Updt.textContent = 'Regular';
   priceOpt3Updt.value = 'Caro';
   priceOpt3Updt.textContent = 'Caro';
@@ -345,14 +332,14 @@ const muro = (navigateTo) => {
   labelCategory.textContent = 'Categoría';
   categoryUpdt.id = 'categoryUpdt';
   categoryUpdt.className = 'form-post';
-  option1Updt.value = 'Vegano';
-  option1Updt.textContent = 'Vegano';
+  option1Updt.value = 'Cafetería';
+  option1Updt.textContent = 'Cafetería';
   option2Updt.value = 'Comida rápida';
   option2Updt.textContent = 'Comida rápida';
-  option3Updt.value = 'Cafetería';
-  option3Updt.textContent = 'Cafetería';
-  option4Updt.value = 'Gurmet';
-  option4Updt.textContent = 'Gurmet';
+  option3Updt.value = 'Gourmet';
+  option3Updt.textContent = 'Gourmet';
+  option4Updt.value = 'Vegano';
+  option4Updt.textContent = 'Vegano';
   categoryUpdt.append(option1Updt, option2Updt, option3Updt, option4Updt);
 
   // botón de publicar
@@ -383,18 +370,28 @@ const muro = (navigateTo) => {
   elemenNav.append(buttonPost);
 
   /// funcion de actualizar post
-  modalUpdt.querySelector('#idregisterPostUpdate').addEventListener('click', (e) => {
-    e.preventDefault();
-    modalUpdt.classList.remove('modal--show');
-    const id = document.querySelector('#idpost');
-    const nombreRest = document.querySelector('#nameRestUdt');
-    const locali = document.querySelector('#locationUdt');
-    const Calfic = document.querySelector('#assmentUdt');
-    const Limpieza = document.querySelector('#clearUpdt');
-    const precio = document.querySelector('#priceUpdt');
-    const categoria = document.querySelector('#categoryUpdt');
-    UpdatePost(id.value, nombreRest.value, locali.value, Calfic.value, Limpieza.value, precio.value, categoria.value);
-  });
+  modalUpdt
+    .querySelector('#idregisterPostUpdate')
+    .addEventListener('click', (e) => {
+      e.preventDefault();
+      modalUpdt.classList.remove('modal--show');
+      const id = document.querySelector('#idpost');
+      const nombreRest = document.querySelector('#nameRestUdt');
+      const locali = document.querySelector('#locationUdt');
+      const Calfic = document.querySelector('#assmentUdt');
+      const Limpieza = document.querySelector('#clearUpdt');
+      const precio = document.querySelector('#priceUpdt');
+      const categoria = document.querySelector('#categoryUpdt');
+      UpdatePost(
+        id.value,
+        nombreRest.value,
+        locali.value,
+        Calfic.value,
+        Limpieza.value,
+        precio.value,
+        categoria.value,
+      );
+    });
 
   // elementos del post
   contentPost.className = 'contentPost';
@@ -440,7 +437,7 @@ const muro = (navigateTo) => {
       li.classList.add('card');
       li.setAttribute('itemscope', '');
       li.setAttribute('itemtype', 'gastroTour');
-      divimg.classList = ('contend-img');
+      divimg.classList = 'contend-img';
       userPost.className = 'userPost';
       // userPost.textContent = 'Leslie Pacheco';
 
@@ -454,10 +451,9 @@ const muro = (navigateTo) => {
       iconUpdatePost.className = 'iconHeader';
       buttonUpdatepost.className = 'buttonUpdate';
 
-      if (doc.data().user === iduser) {
-        buttonDeletePost.append(iconDeletePost);
-        buttonUpdatepost.append(iconUpdatePost);
-      }
+      buttonDeletePost.append(iconDeletePost);
+      buttonUpdatepost.append(iconUpdatePost);
+
       buttonUpdatepost.addEventListener('click', async (e) => {
         e.preventDefault();
         modalUpdt.classList.add('modal--show');
@@ -473,6 +469,7 @@ const muro = (navigateTo) => {
       buttonDeletePost.addEventListener('click', (e) => {
         e.preventDefault();
         const idPost = doc.id;
+
         if (window.confirm('Confirmar para eliminar post')) {
           deletePost(idPost);
         }
@@ -482,7 +479,7 @@ const muro = (navigateTo) => {
       imgPost.className = 'imgPost';
       divimg.append(imgPost);
 
-      divinfo.classList = ('contend-info');
+      divinfo.classList = 'contend-info';
       titlePost.textContent = doc.data().nameRest;
       titlePost.className = 'titlePost';
 
@@ -491,22 +488,27 @@ const muro = (navigateTo) => {
       } else {
         likes.src = '../img/dislike.png';
       }
-      let counter = 0;
-      let isSelected = false;
+      if (doc.data().user === iduser) {
+        let counter = 0;
+        let isSelected = false;
 
-      buttonLike.addEventListener('click', () => {
-        if (!isSelected) {
-          counter += 1;
-          isSelected = true;
-          likes.src = '../img/like.png';
-        } else {
-          counter -= 1;
-          isSelected = false;
-          likes.src = '../img/dislike.png';
-        }
-
-        totalLike.textContent = counter;
-      });
+        buttonLike.addEventListener('click', (e) => {
+          e.preventDefault();
+          const idPost = doc.id;
+          const totalLikes = parseInt(doc.data().like, 10);
+          if (!isSelected) {
+            counter += 1;
+            isSelected = true;
+            likes.src = '../img/like.png';
+          } else {
+            counter -= 1;
+            isSelected = false;
+            likes.src = '../img/dislike.png';
+          }
+          totalLike.textContent = counter;
+          updateLikes(idPost, totalLikes);
+        });
+      }
 
       totalLike.textContent = doc.data().like;
       totalLike.className = 'totalLike';
@@ -520,15 +522,8 @@ const muro = (navigateTo) => {
       local.className = 'titleLocal';
       likes.className = 'imgLike';
 
-      /* buttonLike.addEventListener('click', (e) => {
-        e.preventDefault();
-        const idPost = doc.id;
-        const totalLikes = parseInt(doc.data().like, 10) + 1;
-
-        updateLikes(idPost, totalLikes);
-      });
-      */
       // impresion de las estrellas
+
       article.className = 'rangeStart';
       for (let z = 0; z < doc.data().assm; z += 1) {
         const assmentsPost = document.createElement('img');
@@ -559,8 +554,19 @@ const muro = (navigateTo) => {
       typeCateg.textContent = doc.data().categ;
 
       rangeCateg.append(titleCateg, typeCateg);
-      divinfo.append(local, rangeClear, rangePrice, rangeCateg, article, buttonLike);
-      headerPost.append(titlePost, buttonUpdatepost, buttonDeletePost);
+      divinfo.append(
+        local,
+        rangeClear,
+        rangePrice,
+        rangeCateg,
+        article,
+        buttonLike,
+      );
+      if (doc.data().user === iduser) {
+        headerPost.append(titlePost, buttonUpdatepost, buttonDeletePost);
+      } else {
+        headerPost.append(titlePost);
+      }
       li.append(headerPost, divimg, divinfo);
       listPost.appendChild(li);
     });
@@ -568,7 +574,7 @@ const muro = (navigateTo) => {
 
   contentPost.append(listPost);
 
-  section.append(modal, elemenNav, contentPost, modalUpdt);
+  section.append(modal, buttonLogout, elemenNav, contentPost, modalUpdt);
 
   return section;
 };
